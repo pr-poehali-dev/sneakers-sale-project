@@ -61,6 +61,12 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				sneaker: {
+					black: '#000000',
+					white: '#FFFFFF',
+					orange: '#FF6B35',
+					gray: '#5F5F5F'
 				}
 			},
 			borderRadius: {
