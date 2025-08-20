@@ -12,7 +12,7 @@ interface Product {
   brand: string;
   price: number;
   originalPrice?: number;
-  image: string;
+  images: string[];
   sizes: number[];
   colors: string[];
   isOnSale?: boolean;
@@ -25,6 +25,7 @@ const Index = () => {
   const [selectedColor, setSelectedColor] = useState<string>('all');
   const [priceRange, setPriceRange] = useState<number[]>([0, 50000]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState<{[key: number]: number}>({});
 
   const products: Product[] = [
     {
@@ -33,7 +34,11 @@ const Index = () => {
       brand: "Nike",
       price: 12990,
       originalPrice: 15990,
-      image: "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg",
+      images: [
+        "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg",
+        "/img/df6b654c-0e0d-45d7-9ce7-b9d388acd3ef.jpg",
+        "/img/f3df2aeb-47e3-412e-9ce7-d0417bc3efb7.jpg"
+      ],
       sizes: [40, 41, 42, 43, 44, 45],
       colors: ["Черный", "Белый", "Красный"],
       isOnSale: true
@@ -43,7 +48,10 @@ const Index = () => {
       name: "Stan Smith",
       brand: "Adidas",
       price: 8990,
-      image: "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+      images: [
+        "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+        "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg"
+      ],
       sizes: [39, 40, 41, 42, 43, 44],
       colors: ["Белый", "Зеленый"]
     },
@@ -53,7 +61,10 @@ const Index = () => {
       brand: "Nike",
       price: 9990,
       originalPrice: 11990,
-      image: "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg",
+      images: [
+        "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg",
+        "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg"
+      ],
       sizes: [40, 41, 42, 43, 44, 45, 46],
       colors: ["Белый", "Черный"],
       isOnSale: true
@@ -63,7 +74,10 @@ const Index = () => {
       name: "RS-X",
       brand: "Puma",
       price: 7490,
-      image: "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+      images: [
+        "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+        "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg"
+      ],
       sizes: [39, 40, 41, 42, 43, 44],
       colors: ["Серый", "Синий", "Белый"]
     },
@@ -72,7 +86,10 @@ const Index = () => {
       name: "574 Core",
       brand: "New Balance",
       price: 6990,
-      image: "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+      images: [
+        "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+        "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg"
+      ],
       sizes: [40, 41, 42, 43, 44],
       colors: ["Серый", "Синий"]
     },
@@ -81,7 +98,10 @@ const Index = () => {
       name: "Dunk Low",
       brand: "Nike",
       price: 11990,
-      image: "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg",
+      images: [
+        "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg",
+        "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg"
+      ],
       sizes: [39, 40, 41, 42, 43, 44, 45],
       colors: ["Белый", "Черный", "Серый"]
     },
@@ -90,7 +110,10 @@ const Index = () => {
       name: "Soft 7",
       brand: "Ecco",
       price: 13990,
-      image: "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+      images: [
+        "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+        "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg"
+      ],
       sizes: [40, 41, 42, 43, 44, 45],
       colors: ["Коричневый", "Черный"]
     },
@@ -100,7 +123,10 @@ const Index = () => {
       brand: "UGG",
       price: 16990,
       originalPrice: 19990,
-      image: "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+      images: [
+        "/img/fc3356c3-3c7d-46a6-8549-85c0fec33be6.jpg",
+        "/img/f372e524-2b83-4971-ad6a-5fe58e17ff68.jpg"
+      ],
       sizes: [36, 37, 38, 39, 40, 41],
       colors: ["Бежевый", "Черный", "Серый"],
       isOnSale: true
