@@ -26,6 +26,9 @@ const Index = () => {
   const [priceRange, setPriceRange] = useState<number[]>([0, 50000]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState<{[key: number]: number}>({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const products: Product[] = [
     {
@@ -158,6 +161,56 @@ const Index = () => {
     return cartItems.reduce((total, item) => total + item.price, 0);
   };
 
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === 'sneakers2024') {
+      setIsAuthenticated(true);
+      setPasswordError('');
+    } else {
+      setPasswordError('Неверный пароль');
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-black mb-2">KICKS VAULT</h1>
+            <p className="text-gray-600">Премиальный магазин кроссовок</p>
+          </div>
+          
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Пароль для входа
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                placeholder="Введите пароль"
+                required
+              />
+              {passwordError && (
+                <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+              )}
+            </div>
+            
+            <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800">
+              Войти в магазин
+            </Button>
+            
+            <div className="text-center text-sm text-gray-500">
+              Пароль: <span className="font-mono bg-gray-100 px-2 py-1 rounded">sneakers2024</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -165,7 +218,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-bold text-black">SNEAKER STORE</h1>
+              <h1 className="text-2xl font-bold text-black">KICKS VAULT</h1>
               <nav className="hidden md:flex space-x-6">
                 <a href="#catalog" className="text-gray-700 hover:text-black transition-colors">Каталог</a>
                 <a href="#brands" className="text-gray-700 hover:text-black transition-colors">Бренды</a>
@@ -305,10 +358,28 @@ const Index = () => {
                 <CardContent className="p-0">
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img 
-                      src={product.image} 
+                      src={product.images[currentImageIndex[product.id] || 0]} 
                       alt={product.name}
-                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                      onClick={() => {
+                        const nextIndex = ((currentImageIndex[product.id] || 0) + 1) % product.images.length;
+                        setCurrentImageIndex(prev => ({ ...prev, [product.id]: nextIndex }));
+                      }}
                     />
+                    {product.images.length > 1 && (
+                      <div className="absolute bottom-3 left-3 flex space-x-1">
+                        {product.images.map((_, index) => (
+                          <div
+                            key={index}
+                            className={`w-2 h-2 rounded-full ${
+                              index === (currentImageIndex[product.id] || 0) 
+                                ? 'bg-white' 
+                                : 'bg-white/50'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    )}
                     {product.isOnSale && (
                       <Badge className="absolute top-3 left-3 bg-accent text-white">
                         SALE
@@ -375,7 +446,7 @@ const Index = () => {
                   <div className="space-y-4">
                     {cartItems.map((item, index) => (
                       <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg">
-                        <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                        <img src={item.images[0]} alt={item.name} className="w-16 h-16 object-cover rounded" />
                         <div className="flex-1">
                           <h4 className="font-medium text-sm">{item.name}</h4>
                           <p className="text-sm text-gray-500">{item.brand}</p>
@@ -415,7 +486,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h4 className="text-xl font-bold mb-4">SNEAKER STORE</h4>
+              <h4 className="text-xl font-bold mb-4">KICKS VAULT</h4>
               <p className="text-gray-400">Премиальные кроссовки от ведущих мировых брендов</p>
             </div>
             <div>
@@ -440,7 +511,7 @@ const Index = () => {
               <h5 className="font-semibold mb-4">Контакты</h5>
               <div className="space-y-2 text-gray-400">
                 <p>+7 (999) 123-45-67</p>
-                <p>info@sneakerstore.ru</p>
+                <p>info@kicksvault.ru</p>
                 <p>Москва, ул. Примерная, 123</p>
               </div>
             </div>
